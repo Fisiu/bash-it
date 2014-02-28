@@ -46,6 +46,8 @@ pure theme:
 
 ![](https://raw.github.com/Fisiu/Fisiu.github.io/bash-it-pure-theme/images/pure.png)
 
+You can see the theme screenshots  [here](https://github.com/revans/bash-it/tree/master/theme-screenshots)
+
 ## Help out
 
 I think everyone has their own custom scripts accumulated over time.  And so, following in the footsteps of oh-my-zsh, bash it is a framework for easily customizing your bash shell. Everyone's got a custom toolbox, so let's start making them even better, **as a community!**
