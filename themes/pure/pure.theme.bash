@@ -31,13 +31,21 @@ pure_prompt() {
     ps_root="${red} # ${normal}"
     ps_path="${yellow}\w${normal}";
 
+    # Python
     venv=$(virtualenv_prompt)
-    env="${bold_white}${venv:1}${normal}"
+    penv="${bold_white}${venv:1}${normal}"
+    # Ruby
+    venv=$(ruby_version_prompt)
+    renv="${bold_}${venv:1}${normal}"
+
+    # Whole env
+    env=$renv$penv$(scm_prompt)
+
     # make it work
     case $(id -u) in
-        0) PS1="$ps_root@$ps_host$env$(scm_prompt):$ps_path$ps_root_mark"
+        0) PS1="$ps_root@$ps_host$env:$ps_path$ps_root_mark"
             ;;
-        *) PS1="$ps_user@$ps_host$env$(scm_prompt):$ps_path$ps_user_mark"
+        *) PS1="$ps_user@$ps_host$env:$ps_path$ps_user_mark"
             ;;
     esac
 }
