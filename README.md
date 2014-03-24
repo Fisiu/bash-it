@@ -46,7 +46,7 @@ pure theme:
 
 ![](https://raw.github.com/Fisiu/Fisiu.github.io/bash-it-pure-theme/images/pure.png)
 
-You can see the theme screenshots  [here](https://github.com/revans/bash-it/tree/master/theme-screenshots)
+You can see the theme screenshots  [here](https://github.com/revans/bash-it/wiki/Themes)
 
 ## Help out
 
