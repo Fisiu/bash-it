@@ -19,7 +19,7 @@ scm_prompt() {
         then 
             return
         else 
-            echo "[$(scm_char)$(scm_prompt_info)]"
+            echo "[$CHAR$(scm_prompt_info)]"
     fi 
 }
 
@@ -35,8 +35,9 @@ pure_prompt() {
     venv=$(virtualenv_prompt)
     penv="${bold_white}${venv:1}${normal}"
     # Ruby
-    venv=$(ruby_version_prompt)
-    renv="${bold_}${venv:1}${normal}"
+    rb_color="\e[38;5;161m"
+    venv=$(rvm_version_prompt)
+    renv="${rb_color}${venv:1}${normal}"
 
     # Whole env
     env=$renv$penv$(scm_prompt)
@@ -50,4 +51,7 @@ pure_prompt() {
     esac
 }
 
+
+
 PROMPT_COMMAND=pure_prompt;
+
