@@ -9,8 +9,8 @@ Includes autocompletion, themes, aliases, custom functions, a few stolen pieces 
 ## Install
 
 1. Check a clone of this repo: `git clone https://github.com/revans/bash-it.git ~/.bash_it`
-2. Run `~/.bash_it/install.sh` (it automatically backs up your `~/.bash_profile`)
-3. Edit your `~/.bash_profile` file in order to customize bash-it.
+2. Run `~/.bash_it/install.sh` (it automatically backs up your `~/.bash_profile` or `~/.bashrc`, depends on your OS)
+3. Edit your modified config (`~/.bash_profile` or `~/.bashrc`) file in order to customize bash it.
 
 **NOTE:**
 The install script will also prompt you asking if you use [Jekyll](https://github.com/mojombo/jekyll).
@@ -48,6 +48,8 @@ pure theme:
 
 You can see the theme screenshots  [here](https://github.com/revans/bash-it/wiki/Themes)
 
+Alternatively, you can preview the themes in your own shell using `BASH_PREVIEW=true reload`
+
 ## Misc
 
 ### Bash Profile Aliases
@@ -70,6 +72,33 @@ Set `SCM_CHECK` to 'true' (the default value) to **turn on** version control che
 **NOTE:**
 It is possible for themes to ignore the `SCM_CHECK` flag and query specific version control information directly. For example, themes that use functions like `git_prompt_vars` skip the `SCM_CHECK` flag to retrieve and display git prompt information. If you turned version control checking off and you still see version control information  within your prompt, then functions like `git_prompt_vars` are most likely the reason why. 
 
+### Git repository info in the prompt
+Bash it can show some information about Git repositories in the shell prompt: the current branch, tag or commit you are at, how many commits the local branch is ahead or behind from the remote branch, and if you have changes stashed.
+
+Additionally, you can view the status of your working copy and get the count of staged, unstaged and untracked files. This feature is controlled through the flag `SCM_GIT_SHOW_DETAILS` as follows:
+
+Set `SCM_GIT_SHOW_DETAILS` to 'true' (the default value) to **show** the working copy details in your prompt:
+
+* `export SCM_GIT_SHOW_DETAILS=true`
+
+Set `SCM_GIT_SHOW_DETAILS` to 'false' to **don't show** it:
+
+* `export SCM_GIT_SHOW_DETAILS=false`
+
+#### pass function renamed to passgen
+
+The Bash it `pass` function has been renamed to `passgen` in order to avoid a naming conflict with the [pass password manager]. In order to minimize the impact on users of the legacy Bash it `pass` function, Bash it will create the alias `pass` that calls the new `passgen` function if the `pass` password manager command is not found on the `PATH` (default behavior).
+
+This behavior can be overridden with the `BASH_IT_LEGACY_PASS` flag as follows:
+
+Set `BASH_IT_LEGACY_PASS` to 'true' to force Bash it to always **create** the `pass` alias to `passgen`:
+
+* `export BASH_IT_LEGACY_PASS=true`
+
+Unset `BASH_IT_LEGACY_PASS` to have Bash it **return to default behavior**:
+
+* `unset BASH_IT_LEGACY_PASS`
+
 ## Help out
 
 I think everyone has their own custom scripts accumulated over time.  And so, following in the footsteps of oh-my-zsh, bash it is a framework for easily customizing your bash shell. Everyone's got a custom toolbox, so let's start making them even better, **as a community!**
@@ -84,3 +113,4 @@ Thanks, and happing bashing!
 * [List of contributors][contribute]
 
 [contribute]: https://github.com/revans/bash-it/contributors
+[pass password manager]: http://www.passwordstore.org/

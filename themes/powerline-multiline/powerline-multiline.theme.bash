@@ -11,6 +11,7 @@ VIRTUALENV_THEME_PROMPT_COLOR=35
 
 SCM_NONE_CHAR=""
 SCM_GIT_CHAR=" "
+PROMPT_CHAR="❯"
 
 SCM_THEME_PROMPT_CLEAN=""
 SCM_THEME_PROMPT_DIRTY=""
@@ -24,6 +25,10 @@ SCM_THEME_PROMPT_UNSTAGED_COLOR=166
 CWD_THEME_PROMPT_COLOR=240
 
 LAST_STATUS_THEME_PROMPT_COLOR=52
+
+PROMPT_LENGTH=0
+
+THEME_PROMPT_CLOCK_FORMAT=${THEME_PROMPT_CLOCK_FORMAT:=" %a %H:%M:%S "}
 
 function set_rgb_color {
     if [[ "${1}" != "-" ]]; then
@@ -40,9 +45,11 @@ function powerline_shell_prompt {
     if [[ -n "${SSH_CLIENT}" ]]; then
         SHELL_PROMPT="${bold_white}$(set_rgb_color - ${SHELL_SSH_THEME_PROMPT_COLOR}) ${SHELL_SSH_CHAR}\u@\h ${normal}"
         LAST_THEME_COLOR=${SHELL_SSH_THEME_PROMPT_COLOR}
+        PROMPT_LENGTH=$(($PROMPT_LENGTH + ${#USER} + 1 + ${#HOST} + 2))
     else
         SHELL_PROMPT="${bold_white}$(set_rgb_color - ${SHELL_THEME_PROMPT_COLOR}) \u ${normal}"
         LAST_THEME_COLOR=${SHELL_THEME_PROMPT_COLOR}
+        PROMPT_LENGTH=$(($PROMPT_LENGTH + ${#USER} + 2))
     fi
 }
 
@@ -58,6 +65,7 @@ function powerline_virtualenv_prompt {
     if [[ -n "$environ" ]]; then
         VIRTUALENV_PROMPT="$(set_rgb_color ${LAST_THEME_COLOR} ${VIRTUALENV_THEME_PROMPT_COLOR})${THEME_PROMPT_SEPARATOR}${normal}$(set_rgb_color - ${VIRTUALENV_THEME_PROMPT_COLOR}) ${VIRTUALENV_CHAR}$environ ${normal}"
         LAST_THEME_COLOR=${VIRTUALENV_THEME_PROMPT_COLOR}
+        PROMPT_LENGTH=$(($PROMPT_LENGTH + 2 + 2 + ${#environ} + 1))
     else
         VIRTUALENV_PROMPT=""
     fi
@@ -81,6 +89,7 @@ function powerline_scm_prompt {
         fi
         SCM_PROMPT="$(set_rgb_color ${LAST_THEME_COLOR} ${SCM_THEME_PROMPT_COLOR})${THEME_PROMPT_SEPARATOR}${normal}${SCM_PROMPT} ${normal}"
         LAST_THEME_COLOR=${SCM_THEME_PROMPT_COLOR}
+        PROMPT_LENGTH=$(($PROMPT_LENGTH + 5 + ${#SCM_BRANCH} + ${#SCM_STATE}))
     else
         SCM_PROMPT=""
     fi
@@ -89,6 +98,8 @@ function powerline_scm_prompt {
 function powerline_cwd_prompt {
     CWD_PROMPT="$(set_rgb_color ${LAST_THEME_COLOR} ${CWD_THEME_PROMPT_COLOR})${THEME_PROMPT_SEPARATOR}${normal}$(set_rgb_color - ${CWD_THEME_PROMPT_COLOR}) \w ${normal}$(set_rgb_color ${CWD_THEME_PROMPT_COLOR} -)${normal}"
     LAST_THEME_COLOR=${CWD_THEME_PROMPT_COLOR}
+    mypwd="${PWD/#$HOME/~/}"
+    PROMPT_LENGTH=$(($PROMPT_LENGTH + ${#mypwd} + 2))
 }
 
 function powerline_last_status_prompt {
@@ -101,6 +112,7 @@ function powerline_last_status_prompt {
 
 function powerline_prompt_command() {
     local LAST_STATUS="$?"
+    PROMPT_LENGTH=0
 
     powerline_shell_prompt
     powerline_virtualenv_prompt
@@ -108,8 +120,8 @@ function powerline_prompt_command() {
     powerline_cwd_prompt
     powerline_last_status_prompt LAST_STATUS
 
-    PS1="${SHELL_PROMPT}${VIRTUALENV_PROMPT}${SCM_PROMPT}${CWD_PROMPT}${LAST_STATUS_PROMPT} "
+    FIRST_LINE="${SHELL_PROMPT}${VIRTUALENV_PROMPT}${SCM_PROMPT}${CWD_PROMPT}${LAST_STATUS_PROMPT}"
+    PS1="${FIRST_LINE}\n${PROMPT_CHAR} "
 }
 
 PROMPT_COMMAND=powerline_prompt_command
-
