@@ -51,7 +51,5 @@ pure_prompt() {
     esac
 }
 
-
-
-PROMPT_COMMAND=pure_prompt;
+safe_append_prompt_command pure_prompt
 
